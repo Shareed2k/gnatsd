@@ -910,11 +910,11 @@ func TestRoutedQueueAutoUnsubscribe(t *testing.T) {
 		atomic.AddInt32(&rbaz, 1)
 	}
 
-	// Create 500 queue subs with auto-unsubscribe to each server for
-	// group bar and group baz. So 1000 total per queue group.
+	// Create 250 queue subs with auto-unsubscribe to each server for
+	// group bar and group baz. So 500 total per queue group.
 	cons := []*nats.Conn{ncA, ncB}
 	for _, c := range cons {
-		for i := 0; i < 500; i++ {
+		for i := 0; i < 250; i++ {
 			qsub, err := c.QueueSubscribe("foo", "bar", barCb)
 			if err != nil {
 				t.Fatalf("Error on subscribe: %v", err)
@@ -933,7 +933,7 @@ func TestRoutedQueueAutoUnsubscribe(t *testing.T) {
 		c.Flush()
 	}
 
-	expected := int32(1000)
+	expected := int32(500)
 	// Now send messages from each server
 	for i := int32(0); i < expected; i++ {
 		c := cons[i%2]
