@@ -1114,7 +1114,7 @@ func (c *client) unsubscribe(sub *subscription) {
 	// If we are a queue subscriber on a client connection and we have routes,
 	// we will remember the remote sid and the queue group in case a route
 	// tries to deliver us a message. Remote queue subscribers are directed
-	// so we need to know what to do to avoid unecessary message drops
+	// so we need to know what to do to avoid unnecessary message drops
 	// from [auto-]unsubscribe.
 	if c.typ == CLIENT && c.srv != nil &&
 		len(sub.queue) > 0 && c.srv.NumRoutes() > 0 {
