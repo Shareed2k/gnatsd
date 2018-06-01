@@ -875,7 +875,7 @@ func TestServerPoolUpdatedWhenRouteGoesAway(t *testing.T) {
 func TestRoutedQueueAutoUnsubscribe(t *testing.T) {
 	optsA, _ := ProcessConfigFile("./configs/seed.conf")
 	optsA.NoSigs, optsA.NoLog = true, true
-	optsA.RQSubsSweep = 100 * time.Millisecond
+	optsA.RQSubsSweep = 250 * time.Millisecond
 	srvA := RunServer(optsA)
 	defer srvA.Shutdown()
 
