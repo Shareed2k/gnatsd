@@ -943,7 +943,7 @@ func TestRoutedQueueAutoUnsubscribe(t *testing.T) {
 		c.Flush()
 	}
 
-	wait := time.Now().Add(2 * time.Second)
+	wait := time.Now().Add(5 * time.Second)
 	for time.Now().Before(wait) {
 		nbar := atomic.LoadInt32(&rbar)
 		nbaz := atomic.LoadInt32(&rbaz)
