@@ -90,6 +90,7 @@ type Server struct {
 	grWG          sync.WaitGroup // to wait on various go routines
 	cproto        int64          // number of clients supporting async INFO
 	configTime    time.Time      // last time config was loaded
+	ach           chan asyncCB
 	logging       struct {
 		sync.RWMutex
 		logger Logger
@@ -119,6 +120,9 @@ type stats struct {
 	outBytes      int64
 	slowConsumers int64
 }
+
+// asyncCB is used to preserve order for async callbacks.
+type asyncCB func()
 
 // New will setup a new server struct after parsing the options.
 func New(opts *Options) *Server {
@@ -156,6 +160,9 @@ func New(opts *Options) *Server {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
+	// Create the async callback channel.
+	s.ach = make(chan asyncCB, 32)
+
 	// This is normally done in the AcceptLoop, once the
 	// listener has been created (possibly with random port),
 	// but since some tests may expect the INFO to be properly
@@ -183,6 +190,35 @@ func New(opts *Options) *Server {
 	s.handleSignals()
 
 	return s
+}
+
+// Marker to close the channel to kick out the Go routine.
+func (s *Server) closeAsyncFunc() asyncCB {
+	return func() {
+		s.optsMu.RLock()
+		if s.ach != nil {
+			close(s.ach)
+			s.ach = nil
+		}
+		s.optsMu.Unlock()
+	}
+}
+
+// asyncDispatch is responsible for calling any async callbacks
+func (s *Server) asyncDispatch() {
+	// snapshot since they can change from underneath of us.
+	s.optsMu.RLock()
+	ach := s.ach
+	s.optsMu.Unlock()
+
+	// Loop on the channel and process async callbacks.
+	for {
+		if f, ok := <-ach; !ok {
+			return
+		} else {
+			f()
+		}
+	}
 }
 
 func (s *Server) getOpts() *Options {
@@ -312,6 +348,9 @@ func (s *Server) Start() {
 		s.StartProfiler()
 	}
 
+	// Spin up the async cb dispatcher on success
+	go s.asyncDispatch()
+
 	// Wait for clients.
 	s.AcceptLoop(clientListenReady)
 }
@@ -390,6 +429,8 @@ func (s *Server) Shutdown() {
 	for _, c := range conns {
 		c.closeConnection()
 	}
+
+	s.ach <- s.closeAsyncFunc()
 
 	// Block until the accept loops exit
 	for doneExpected > 0 {
@@ -817,6 +858,11 @@ func (s *Server) createClient(conn net.Conn) *client {
 		c.Debugf("TLS handshake complete")
 		cs := c.nc.(*tls.Conn).ConnectionState()
 		c.Debugf("TLS version %s, cipher suite %s", tlsVersion(cs.Version), tlsCipher(cs.CipherSuite))
+	}
+
+	// OnDisconnect callback
+	if s.opts.ConnectedCB != nil {
+		s.ach <- func() { s.opts.ConnectedCB(c) }
 	}
 
 	c.mu.Unlock()

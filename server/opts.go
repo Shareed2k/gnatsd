@@ -86,10 +86,16 @@ type Options struct {
 	TLSCaCert       string        `json:"-"`
 	TLSConfig       *tls.Config   `json:"-"`
 	WriteDeadline   time.Duration `json:"-"`
+	DisconnectedCB  ConnHandler   `json:"-"`
+	ConnectedCB     ConnHandler   `json:"-"`
 
 	CustomClientAuthentication Authentication `json:"-"`
 	CustomRouterAuthentication Authentication `json:"-"`
 }
+
+// ConnHandler is used for asynchronous events such as
+// disconnected and closed connections.
+type ConnHandler func(ClientInterface)
 
 // Clone performs a deep copy of the Options struct, returning a new clone
 // with all values copied.

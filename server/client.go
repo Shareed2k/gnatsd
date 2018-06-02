@@ -46,6 +46,11 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+type ClientInterface interface {
+	GetOpts() *clientOpts
+	GetConnection() net.Conn
+}
+
 const (
 	// Scratch buffer size for the processMsg() calls.
 	msgScratchSize = 512
@@ -150,6 +155,10 @@ func (c *client) String() (id string) {
 
 func (c *client) GetOpts() *clientOpts {
 	return &c.opts
+}
+
+func (c *client) GetConnection() net.Conn {
+	return c.nc
 }
 
 // GetTLSConnectionState returns the TLS ConnectionState if TLS is enabled, nil
@@ -502,6 +511,11 @@ func (c *client) processConnect(arg []byte) error {
 	if verbose {
 		c.sendOK()
 	}
+
+	if srv.opts.ConnectedCB != nil {
+		srv.ach <- func() { srv.opts.ConnectedCB(c) }
+	}
+
 	return nil
 }
 
@@ -1389,6 +1403,11 @@ func (c *client) closeConnection() {
 	c.mu.Unlock()
 
 	if srv != nil {
+		// OnDisconnect callback
+		if srv.opts.DisconnectedCB != nil {
+			srv.ach <- func() { srv.opts.DisconnectedCB(c) }
+		}
+
 		// This is a route that disconnected...
 		if len(connectURLs) > 0 {
 			// Unless disabled, possibly update the server's INFO protcol
