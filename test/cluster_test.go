@@ -20,7 +20,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nats-io/gnatsd/server"
+	"github.com/Shareed2k/gnatsd/server"
 )
 
 // Helper function to check that a cluster is formed

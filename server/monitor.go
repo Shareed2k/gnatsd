@@ -25,7 +25,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/nats-io/gnatsd/server/pse"
+	"github.com/Shareed2k/gnatsd/server/pse"
 )
 
 // Snapshot this

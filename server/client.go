@@ -48,7 +48,6 @@ func init() {
 
 type ClientInterface interface {
 	GetOpts() *clientOpts
-	GetConnection() net.Conn
 }
 
 const (
@@ -155,10 +154,6 @@ func (c *client) String() (id string) {
 
 func (c *client) GetOpts() *clientOpts {
 	return &c.opts
-}
-
-func (c *client) GetConnection() net.Conn {
-	return c.nc
 }
 
 // GetTLSConnectionState returns the TLS ConnectionState if TLS is enabled, nil
@@ -512,8 +507,8 @@ func (c *client) processConnect(arg []byte) error {
 		c.sendOK()
 	}
 
-	if srv.opts.ConnectedCB != nil {
-		srv.ach <- func() { srv.opts.ConnectedCB(c) }
+	if srv != nil && srv.opts.ClientConnectedCB != nil {
+		srv.ach <- func() { srv.opts.ClientConnectedCB(c) }
 	}
 
 	return nil
@@ -1404,8 +1399,8 @@ func (c *client) closeConnection() {
 
 	if srv != nil {
 		// OnDisconnect callback
-		if srv.opts.DisconnectedCB != nil {
-			srv.ach <- func() { srv.opts.DisconnectedCB(c) }
+		if srv.opts.ClientDisconnectedCB != nil {
+			srv.ach <- func() { srv.opts.ClientDisconnectedCB(c) }
 		}
 
 		// This is a route that disconnected...

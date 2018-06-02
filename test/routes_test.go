@@ -25,7 +25,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nats-io/gnatsd/server"
+	"github.com/Shareed2k/gnatsd/server"
 )
 
 const clientProtoInfo = 1

@@ -11,7 +11,7 @@ If you just want to start using NATS, and you have [installed Go](https://golang
 Install and run the NATS server:
 
 ```
-go get github.com/nats-io/gnatsd
+go get github.com/Shareed2k/gnatsd
 gnatsd
 ```
 
@@ -40,7 +40,7 @@ You can build the latest version of the server from the `master` branch. The mas
 You need [*Go*](http://golang.org/) version 1.5+ [installed](https://golang.org/doc/install) to build the NATS server. We support vendored dependencies, which are fully supported in Go 1.6. For Go 1.5, build with `GO15VENDOREXPERIMENT=1`.
 
 - Run `go version` to verify that you are running Go 1.5+. (Run `go help` for more guidance.)
-- Clone the <https://github.com/nats-io/gnatsd> repository.
+- Clone the <https://github.com/Shareed2k/gnatsd> repository.
 - Run `go build` inside the `/nats-io/gnatsd` directory. A successful build produces no messages and creates the server executable `gnatsd` in the directory.
 - Run `go test ./...` to run the unit regression tests.
 
@@ -716,7 +716,7 @@ In addition to TLS functionality, the server now also supports bcrypt for passwo
 There is a utility bundled under /util/mkpasswd. By default with no arguments it will generate a secure password and the associated hash. This can be used for a password or a token in the configuration. If you already have a password selected, you can supply that on stdin with the -p flag.
 
 ```bash
-~/go/src/github.com/nats-io/gnatsd/util> ./mkpasswd
+~/go/src/github.com/Shareed2k/gnatsd/util> ./mkpasswd
 pass: #IclkRPHUpsTmACWzmIGXr
 bcrypt hash: $2a$11$3kIDaCxw.Glsl1.u5nKa6eUnNDLV5HV9tIuUp7EHhMt6Nm9myW1aS
 ```
@@ -797,13 +797,13 @@ NATS Office Hours will be on hiatus for the US summer season. Please join our [S
 [Fossa-Image]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnats-io%2Fgnatsd.svg?type=shield
 [Build-Status-Url]: http://travis-ci.org/nats-io/gnatsd
 [Build-Status-Image]: https://travis-ci.org/nats-io/gnatsd.svg?branch=master
-[Release-Url]: https://github.com/nats-io/gnatsd/releases/tag/v1.1.0
+[Release-Url]: https://github.com/Shareed2k/gnatsd/releases/tag/v1.1.0
 [Release-image]: http://img.shields.io/badge/release-v1.1.0-1eb0fc.svg
 [Coverage-Url]: https://coveralls.io/r/nats-io/gnatsd?branch=master
 [Coverage-image]: https://coveralls.io/repos/github/nats-io/gnatsd/badge.svg?branch=master
 [ReportCard-Url]: http://goreportcard.com/report/nats-io/gnatsd
-[ReportCard-Image]: http://goreportcard.com/badge/github.com/nats-io/gnatsd
-[github-release]: https://github.com/nats-io/gnatsd/releases/
+[ReportCard-Image]: http://goreportcard.com/badge/github.com/Shareed2k/gnatsd
+[github-release]: https://github.com/Shareed2k/gnatsd/releases/
 
 ## License
 

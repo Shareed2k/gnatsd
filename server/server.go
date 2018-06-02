@@ -32,7 +32,7 @@ import (
 	// Allow dynamic profiling.
 	_ "net/http/pprof"
 
-	"github.com/nats-io/gnatsd/util"
+	"github.com/Shareed2k/gnatsd/util"
 )
 
 // Info is the information sent to clients to help them understand information
@@ -209,7 +209,7 @@ func (s *Server) asyncDispatch() {
 	// snapshot since they can change from underneath of us.
 	s.optsMu.RLock()
 	ach := s.ach
-	s.optsMu.Unlock()
+	s.optsMu.RUnlock()
 
 	// Loop on the channel and process async callbacks.
 	for {
@@ -858,11 +858,6 @@ func (s *Server) createClient(conn net.Conn) *client {
 		c.Debugf("TLS handshake complete")
 		cs := c.nc.(*tls.Conn).ConnectionState()
 		c.Debugf("TLS version %s, cipher suite %s", tlsVersion(cs.Version), tlsCipher(cs.CipherSuite))
-	}
-
-	// OnDisconnect callback
-	if s.opts.ConnectedCB != nil {
-		s.ach <- func() { s.opts.ConnectedCB(c) }
 	}
 
 	c.mu.Unlock()

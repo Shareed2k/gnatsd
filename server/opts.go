@@ -27,8 +27,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nats-io/gnatsd/conf"
-	"github.com/nats-io/gnatsd/util"
+	"github.com/Shareed2k/gnatsd/conf"
+	"github.com/Shareed2k/gnatsd/util"
 )
 
 // ClusterOpts are options for clusters.
@@ -48,46 +48,46 @@ type ClusterOpts struct {
 
 // Options block for gnatsd server.
 type Options struct {
-	ConfigFile      string        `json:"-"`
-	Host            string        `json:"addr"`
-	Port            int           `json:"port"`
-	ClientAdvertise string        `json:"-"`
-	Trace           bool          `json:"-"`
-	Debug           bool          `json:"-"`
-	NoLog           bool          `json:"-"`
-	NoSigs          bool          `json:"-"`
-	Logtime         bool          `json:"-"`
-	MaxConn         int           `json:"max_connections"`
-	Users           []*User       `json:"-"`
-	Username        string        `json:"-"`
-	Password        string        `json:"-"`
-	Authorization   string        `json:"-"`
-	PingInterval    time.Duration `json:"ping_interval"`
-	MaxPingsOut     int           `json:"ping_max"`
-	HTTPHost        string        `json:"http_host"`
-	HTTPPort        int           `json:"http_port"`
-	HTTPSPort       int           `json:"https_port"`
-	AuthTimeout     float64       `json:"auth_timeout"`
-	MaxControlLine  int           `json:"max_control_line"`
-	MaxPayload      int           `json:"max_payload"`
-	Cluster         ClusterOpts   `json:"cluster"`
-	ProfPort        int           `json:"-"`
-	PidFile         string        `json:"-"`
-	LogFile         string        `json:"-"`
-	Syslog          bool          `json:"-"`
-	RemoteSyslog    string        `json:"-"`
-	Routes          []*url.URL    `json:"-"`
-	RoutesStr       string        `json:"-"`
-	TLSTimeout      float64       `json:"tls_timeout"`
-	TLS             bool          `json:"-"`
-	TLSVerify       bool          `json:"-"`
-	TLSCert         string        `json:"-"`
-	TLSKey          string        `json:"-"`
-	TLSCaCert       string        `json:"-"`
-	TLSConfig       *tls.Config   `json:"-"`
-	WriteDeadline   time.Duration `json:"-"`
-	DisconnectedCB  ConnHandler   `json:"-"`
-	ConnectedCB     ConnHandler   `json:"-"`
+	ConfigFile           string        `json:"-"`
+	Host                 string        `json:"addr"`
+	Port                 int           `json:"port"`
+	ClientAdvertise      string        `json:"-"`
+	Trace                bool          `json:"-"`
+	Debug                bool          `json:"-"`
+	NoLog                bool          `json:"-"`
+	NoSigs               bool          `json:"-"`
+	Logtime              bool          `json:"-"`
+	MaxConn              int           `json:"max_connections"`
+	Users                []*User       `json:"-"`
+	Username             string        `json:"-"`
+	Password             string        `json:"-"`
+	Authorization        string        `json:"-"`
+	PingInterval         time.Duration `json:"ping_interval"`
+	MaxPingsOut          int           `json:"ping_max"`
+	HTTPHost             string        `json:"http_host"`
+	HTTPPort             int           `json:"http_port"`
+	HTTPSPort            int           `json:"https_port"`
+	AuthTimeout          float64       `json:"auth_timeout"`
+	MaxControlLine       int           `json:"max_control_line"`
+	MaxPayload           int           `json:"max_payload"`
+	Cluster              ClusterOpts   `json:"cluster"`
+	ProfPort             int           `json:"-"`
+	PidFile              string        `json:"-"`
+	LogFile              string        `json:"-"`
+	Syslog               bool          `json:"-"`
+	RemoteSyslog         string        `json:"-"`
+	Routes               []*url.URL    `json:"-"`
+	RoutesStr            string        `json:"-"`
+	TLSTimeout           float64       `json:"tls_timeout"`
+	TLS                  bool          `json:"-"`
+	TLSVerify            bool          `json:"-"`
+	TLSCert              string        `json:"-"`
+	TLSKey               string        `json:"-"`
+	TLSCaCert            string        `json:"-"`
+	TLSConfig            *tls.Config   `json:"-"`
+	WriteDeadline        time.Duration `json:"-"`
+	ClientDisconnectedCB ConnHandler   `json:"-"`
+	ClientConnectedCB    ConnHandler   `json:"-"`
 
 	CustomClientAuthentication Authentication `json:"-"`
 	CustomRouterAuthentication Authentication `json:"-"`
